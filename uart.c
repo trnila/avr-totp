@@ -1,6 +1,10 @@
 #include <avr/io.h>
 #include <util/setbaud.h>
+#include <stdio.h>
 #include "uart.h"
+
+int uart_putchar(char c, FILE *stream);
+static FILE mystdout = FDEV_SETUP_STREAM(uart_putchar, NULL, _FDEV_SETUP_WRITE);
 
 void uart_init() {
 	UBRRH = UBRRH_VALUE;
@@ -13,20 +17,17 @@ void uart_init() {
 
 	UCSRB = (1<<RXEN)|(1<<TXEN);
 	UCSRC = (1<<URSEL)|(3<<UCSZ0);
+
+	stdout = &mystdout;
 }
 
-void uart_putchar(uint8_t c) {
+int uart_putchar(char c, FILE *stream) {
 	while ( !( UCSRA & (1<<UDRE)) );
 	UDR = c;
+	return 0;
 }
 
 uint8_t uart_getch() {
 	while(!(UCSRA & (1<<RXC)));
 	return UDR;
-}
-
-void print(char *msg) {
-	for(; *msg != '\0'; msg++) {
-		uart_putchar(*msg);
-	}
 }

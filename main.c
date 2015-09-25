@@ -1,18 +1,17 @@
 #include <avr/io.h>
 #include <util/delay.h>
+#include <stdio.h>
 #include "uart.h"
 
 int main() {
 	uart_init();
-	print("\r\nHello!\r\n");
 
-	DDRB = 0xFF;
+	printf("Hello, %s!\r\n", "world");
 
+	unsigned int seconds = 0;
 	for(;;) {
-		uart_putchar('.');
-		_delay_ms(100);
-
-		PORTB ^= 0xFF;
+		printf("%d\r\n", seconds++);
+		_delay_ms(1000);
 	}
 
 	return 1;

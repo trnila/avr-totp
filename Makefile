@@ -2,7 +2,7 @@ PROGRAMMER=usbasp
 PROGRAMMER_PARAMS=-B 10
 DEVICE=atmega8
 
-CFLAGS=-mmcu=$(DEVICE) -Os -Wl,-gc-sections -ffunction-sections -D BAUD=2400 -D F_CPU=1000000
+CFLAGS=-mmcu=$(DEVICE) -Wall -Werror -Os -Wl,-gc-sections -ffunction-sections -D BAUD=2400 -D F_CPU=1000000
 
 all: main.hex
 
