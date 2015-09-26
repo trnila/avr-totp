@@ -19,13 +19,13 @@ void mylcd_init() {
   _delay_ms(50);
 
   // function set
-  mylcd_sendcmd(0x30);
+  mylcd_sendcmd(0x38);
 
   // function set again
-  mylcd_sendcmd(0x30);
+  mylcd_sendcmd(0x38);
 
   // display on/off, cursor
-  mylcd_sendcmd(0x0E);
+  mylcd_sendcmd(0x0C);
 
   // display clear
   mylcd_sendcmd(0x01);

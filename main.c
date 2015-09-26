@@ -68,6 +68,90 @@ int main() {
 	DS1307_getDate(&day, &month, &year);
 	printf("DS1307: Current time %d. %d. %d %02d:%02d:%02d\r\n", day, month, year, hours, minutes, seconds);
 
+	uint8_t font[] = {
+		0b11111,
+		0b10000,
+		0b10000,
+		0b10000,
+		0b10000,
+		0b10000,
+		0b10000,
+		0b11111,
+
+		0b11111,
+		0b11000,
+		0b11000,
+		0b11000,
+		0b11000,
+		0b11000,
+		0b11000,
+		0b11111,
+
+		0b11111,
+		0b11100,
+		0b11100,
+		0b11100,
+		0b11100,
+		0b11100,
+		0b11100,
+		0b11111,
+
+		0b11111,
+		0b11110,
+		0b11110,
+		0b11110,
+		0b11110,
+		0b11110,
+		0b11110,
+		0b11111,
+
+		0b11111,
+		0b11111,
+		0b11111,
+		0b11111,
+		0b11111,
+		0b11111,
+		0b11111,
+		0b11111,
+
+
+		// 5
+		0b11111,
+		0b10000,
+		0b10000,
+		0b10000,
+		0b10000,
+		0b10000,
+		0b10000,
+		0b11111,
+
+		// 6
+		0b11111,
+		0b00000,
+		0b00000,
+		0b00000,
+		0b00000,
+		0b00000,
+		0b00000,
+		0b11111,
+
+		// 7
+		0b11111,
+		0b00001,
+		0b00001,
+		0b00001,
+		0b00001,
+		0b00001,
+		0b00001,
+		0b11111,
+
+	};
+
+	mylcd_sendcmd(0x40);
+	for(int i = 0; i < sizeof(font) / sizeof(font[0]); i++) {
+		mylcd_senddata(font[i]);
+	}
+
 	for(;;) {
 		DS1307_getTime(&hours, &minutes, &seconds);
 		DS1307_getDate(&day, &month, &year);
@@ -92,6 +176,23 @@ int main() {
 			mylcd_senddata((code / d) + '0');
 			code -= (code / d) * d;
 			d /= 10;
+		}
+
+
+		mylcd_sendcmd(0x80 | 0x40);
+		mylcd_senddata(5);
+		for(int i = 0; i < 14; i++) {
+			mylcd_senddata(6);
+		}
+		mylcd_senddata(7);
+
+
+		for(int pos = 0; pos < 16; pos++) {
+			for(int i = 0; i < 5; i++) {
+				mylcd_sendcmd(0x80 | 0x40 | pos);
+				mylcd_senddata(i);
+				_delay_ms(375);
+			}
 		}
 
 		_delay_ms(1000);
