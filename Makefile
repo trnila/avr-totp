@@ -9,7 +9,7 @@ all: main.hex
 main.hex: main.elf
 	avr-objcopy -j .text -j .data -O ihex $^ $@
 
-main.elf: main.o lcd.o uart.o hmac-sha1.o sha1.o base32.o i2c.o
+main.elf: main.o lcd.o uart.o hmac-sha1.o sha1.o base32.o i2c.o DS1307.o
 	avr-gcc $(CFLAGS) -o $@ $^
 
 %.o: %.c
